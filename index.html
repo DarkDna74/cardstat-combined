@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultimate ACAAN</title>
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.js"></script>
+  <style>
+  body {
+         font-family: Arial, sans-serif;
+         text-align: center;
+         background-color: black;
+         background: radial-gradient(circle, black 0%, white 400%);
+         color: black;
+         }.container {
+         max-width: 340px; /* Larghezza fissa per adattare le 4 colonne */
+         margin: 0 auto;
+         flex-wrap: nowrap; /* Evita che vadano sotto */
+         }
+         .bold-number {
+         font-weight: bold;
+         }
+         h1 {
+         border-bottom: 2px solid gray;
+         padding: 10px;;
+         font-size:28px;
+         background: radial-gradient(circle, white 0%, black 150%);
+         }
+         .container {
+    display: flex;
+    flex-direction: column; /* Mette i bottoni in colonna */
+    justify-content: center; /* Centra verticalmente */
+    justify-content: flex-start; /* Spinge i bottoni verso l'alto */
+    align-items: top; /* Centra orizzontalmente */
+    height: 100vh; /* Occupa tutta l'altezza dello schermo */
+    gap:50px;
+    padding-top:100px;
+  }
+
+  .container button {
+    width: 300px;
+    height: 70px;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    background-color: #333;
+    background: radial-gradient(circle, white 0%, black 150%);
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px 0; /* Spazio tra i bottoni */
+  }
+
+  .container button:hover {
+    background-color: #555;
+  }
+
+  </style>
+  <script>
+   
+    function calcolaHashData(data) {
+      // Format della data come stringa "YYYY-MM-DD HH:MM"
+      const dataStr = data.getFullYear() + '-' + 
+                      ('0' + (data.getMonth() + 1)).slice(-2) + '-' + 
+                      ('0' + data.getDate()).slice(-2) + ' ' + 
+                      ('0' + data.getHours()).slice(-2) + ':' + 
+                      ('0' + data.getMinutes()).slice(-2);
+
+      // Calcola l'hash utilizzando SHA-256
+      const hash = CryptoJS.SHA256(dataStr).toString(CryptoJS.enc.Hex);
+      
+      // Restituisce le prime 6 lettere dell'hash esadecimale
+      return hash.slice(0, 6);
+    }
+
+    function generaLink(stack) {
+      const now = new Date();
+      const dataIncrementata = new Date(now.getTime() + 29 * 60000); // Incrementa di 10 minuti
+      const hash = calcolaHashData(dataIncrementata);
+      let link = `https://cardstat.vercel.app?hash=${hash}`;
+      if ( stack==='1')
+      {
+        link = `https://cardstat.vercel.app?S=1&hash=${hash}`;
+      }
+      window.location.href = link;
+    }
+
+
+  </script>
+
+  
+</head>
+<body>
+  <h1>Cards and Stats</h1>
+  <div class="container">
+    <button onclick="generaLink('0')">Mnemonica</button>
+    <button onclick="generaLink('1')">Aronson</button>
+  </div>
+</body>
+</html>
